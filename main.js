@@ -66,14 +66,22 @@ for (let i = 0; i < count; i++) {
   border.position.z = -4; // Alinha a moldura com a obra de arte
   baseNode.add(border);
 
-  // Textura carregada dentro do loop
+  // Log para verificar qual imagem está sendo carregada
+  console.log(`Carregando imagem: ${images[i]} (${titles[i]})`);
+
+  // Textura carregada dentro do loop com callbacks para depuração
   const texture = textureLoader.load(images[i]);
   texture.colorSpace = THREE.SRGBColorSpace;
 
   // Objeto da obra de arte com textura
   const artwork = new THREE.Mesh(
     new THREE.BoxGeometry(3, 2, 0.1),
-    new THREE.MeshStandardMaterial({ map: texture })
+    new THREE.MeshStandardMaterial({
+      map: texture || null, // Fallback para cor sólida
+      color: texture ? 0xffffff : 0xff0000,
+      transparent: true,
+      opacity: 1
+    })
   );
   artwork.name = `Art_${i}`;
   artwork.position.z = -4; // Mantido exatamente como estava
